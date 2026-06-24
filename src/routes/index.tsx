@@ -27,7 +27,7 @@ function Index() {
   });
 
   return (
-    <PublicLayout settings={settings as never}>
+    <PublicLayout settings={settings as PublicSiteSettings | undefined}>
       <section className="container-editorial py-24 md:py-32">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-primary">Foundation Sprint</p>
