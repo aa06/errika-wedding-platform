@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { PublicLayout } from "@/components/layout/PublicLayout";
-import { getPublicSiteSettings } from "@/lib/site-settings.functions";
+import { getPublicSiteSettings, type PublicSiteSettings } from "@/lib/site-settings.functions";
 import { buildMeta } from "@/lib/seo/meta";
 
 export const Route = createFileRoute("/")({
