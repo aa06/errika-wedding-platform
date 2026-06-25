@@ -3,15 +3,56 @@ import { useQuery } from "@tanstack/react-query";
 import { PublicLayout } from "@/components/layout/PublicLayout";
 import { getPublicSiteSettings, type PublicSiteSettings } from "@/lib/site-settings.functions";
 import { buildMeta } from "@/lib/seo/meta";
+import {
+  HeroSection,
+  TrustStatsSection,
+  ProblemsSection,
+  HowWeHelpSection,
+  JourneySection,
+  BudgetCalculatorPreview,
+  PackageCategoriesSection,
+  PortfolioCarouselSection,
+  TestimonialsSection,
+  SatisfactionCenterSection,
+  WhyChooseUsSection,
+  FaqSection,
+  BlogPreviewSection,
+  FinalCtaSection,
+} from "@/components/home/sections";
 
 export const Route = createFileRoute("/")({
-  head: () =>
-    buildMeta({
+  head: () => ({
+    ...buildMeta({
       title: "Errika Wedding Planner & Organizer Jakarta",
       description:
-        "Wedding planner & organizer terpercaya di Jakarta. Konsultasi gratis, paket fleksibel 30jt–150jt IDR.",
+        "Wedding planner & organizer terpercaya di Jakarta. Konsultasi gratis, paket fleksibel, dan pendampingan profesional untuk mewujudkan pernikahan impian Anda.",
       ogType: "website",
+      canonical: "/",
     }),
+    meta: [
+      ...buildMeta({
+        title: "Errika Wedding Planner & Organizer Jakarta",
+        description:
+          "Wedding planner & organizer terpercaya di Jakarta. Konsultasi gratis, paket fleksibel, dan pendampingan profesional untuk mewujudkan pernikahan impian Anda.",
+        ogType: "website",
+        canonical: "/",
+      }).meta,
+      { property: "og:url", content: "/" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "Errika Wedding Planner & Organizer",
+          description: "Wedding planner & organizer di Jakarta — Affordable Luxury, Perfectly Planned.",
+          areaServed: "Indonesia",
+          slogan: "Affordable Luxury, Perfectly Planned",
+        }),
+      },
+    ],
+  }),
   loader: ({ context }) =>
     context.queryClient.ensureQueryData({
       queryKey: ["site-settings"],
@@ -27,20 +68,21 @@ function Index() {
   });
 
   return (
-    <PublicLayout settings={settings as PublicSiteSettings | undefined}>
-      <section className="container-editorial py-24 md:py-32">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-xs uppercase tracking-[0.3em] text-primary">Foundation Sprint</p>
-          <h1 className="mt-4 text-balance font-heading text-foreground">
-            Wedding Planner & Organizer Jakarta
-          </h1>
-          <div className="mx-auto mt-6 h-px w-24 editorial-rule" />
-          <p className="mx-auto mt-6 max-w-xl text-balance text-base text-muted-foreground">
-            Platform sedang dalam tahap pembangunan. Halaman, paket, portfolio, dan kalkulator
-            anggaran akan hadir di sprint berikutnya.
-          </p>
-        </div>
-      </section>
+    <PublicLayout settings={settings as PublicSiteSettings | undefined} transparentHero>
+      <HeroSection />
+      <TrustStatsSection />
+      <ProblemsSection />
+      <HowWeHelpSection />
+      <JourneySection />
+      <BudgetCalculatorPreview />
+      <PackageCategoriesSection />
+      <PortfolioCarouselSection />
+      <TestimonialsSection />
+      <SatisfactionCenterSection />
+      <WhyChooseUsSection />
+      <FaqSection />
+      <BlogPreviewSection />
+      <FinalCtaSection />
     </PublicLayout>
   );
 }
