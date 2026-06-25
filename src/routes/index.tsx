@@ -21,38 +21,32 @@ import {
 } from "@/components/home/sections";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    ...buildMeta({
+  head: () => {
+    const m = buildMeta({
       title: "Errika Wedding Planner & Organizer Jakarta",
       description:
         "Wedding planner & organizer terpercaya di Jakarta. Konsultasi gratis, paket fleksibel, dan pendampingan profesional untuk mewujudkan pernikahan impian Anda.",
       ogType: "website",
       canonical: "/",
-    }),
-    meta: [
-      ...buildMeta({
-        title: "Errika Wedding Planner & Organizer Jakarta",
-        description:
-          "Wedding planner & organizer terpercaya di Jakarta. Konsultasi gratis, paket fleksibel, dan pendampingan profesional untuk mewujudkan pernikahan impian Anda.",
-        ogType: "website",
-        canonical: "/",
-      }).meta,
-      { property: "og:url", content: "/" },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          name: "Errika Wedding Planner & Organizer",
-          description: "Wedding planner & organizer di Jakarta — Affordable Luxury, Perfectly Planned.",
-          areaServed: "Indonesia",
-          slogan: "Affordable Luxury, Perfectly Planned",
-        }),
-      },
-    ],
-  }),
+    });
+    return {
+      meta: m.meta,
+      links: m.links,
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            name: "Errika Wedding Planner & Organizer",
+            description: "Wedding planner & organizer di Jakarta — Affordable Luxury, Perfectly Planned.",
+            areaServed: "Indonesia",
+            slogan: "Affordable Luxury, Perfectly Planned",
+          }),
+        },
+      ],
+    };
+  },
   loader: ({ context }) =>
     context.queryClient.ensureQueryData({
       queryKey: ["site-settings"],
