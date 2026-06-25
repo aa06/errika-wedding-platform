@@ -88,6 +88,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "id_ID" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Errika Wedding Planner & Organizer Jakarta" },
+      { name: "twitter:title", content: "Errika Wedding Planner & Organizer Jakarta" },
+      { name: "description", content: "Errika Blueprint provides a comprehensive wedding planning platform for couples in Jakarta." },
+      { property: "og:description", content: "Errika Blueprint provides a comprehensive wedding planning platform for couples in Jakarta." },
+      { name: "twitter:description", content: "Errika Blueprint provides a comprehensive wedding planning platform for couples in Jakarta." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/efd30b02-940e-437b-b534-96e484c8d465/id-preview-83f9964e--7fd8c225-22f8-4824-9634-847b404d6e3d.lovable.app-1782387531697.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/efd30b02-940e-437b-b534-96e484c8d465/id-preview-83f9964e--7fd8c225-22f8-4824-9634-847b404d6e3d.lovable.app-1782387531697.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
