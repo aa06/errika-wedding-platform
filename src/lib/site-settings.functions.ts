@@ -16,28 +16,50 @@ export type PublicSiteSettings = {
   feature_flags: { show_promo_banner?: boolean; enable_budget_calculator?: boolean };
 };
 
+const EMPTY_SETTINGS: PublicSiteSettings = {
+  branding: {},
+  contact: {},
+  social: {},
+  location: {},
+  analytics: {},
+  seo_defaults: {},
+  feature_flags: {},
+};
+
 export const getPublicSiteSettings = createServerFn({ method: "GET" }).handler(
   async (): Promise<PublicSiteSettings> => {
-    const supabase = createClient<Database>(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PUBLISHABLE_KEY!,
-      { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
-    );
-    const { data, error } = await supabase
-      .from("site_settings")
-      .select("key, value")
-      .in("key", ["branding", "contact", "social", "location", "analytics", "seo_defaults", "feature_flags"]);
-    if (error) throw error;
-    const out: Record<string, unknown> = {};
-    for (const row of data ?? []) out[row.key] = row.value ?? {};
-    return {
-      branding: (out.branding ?? {}) as PublicSiteSettings["branding"],
-      contact: (out.contact ?? {}) as PublicSiteSettings["contact"],
-      social: (out.social ?? {}) as PublicSiteSettings["social"],
-      location: (out.location ?? {}) as PublicSiteSettings["location"],
-      analytics: (out.analytics ?? {}) as PublicSiteSettings["analytics"],
-      seo_defaults: (out.seo_defaults ?? {}) as PublicSiteSettings["seo_defaults"],
-      feature_flags: (out.feature_flags ?? {}) as PublicSiteSettings["feature_flags"],
-    };
+    // Resilient: if env vars are missing (e.g. fresh Vercel deploy without
+    // Supabase secrets) or the query fails, return empty defaults so SSR
+    // still renders the public homepage instead of crashing with a 500.
+    const url = process.env.SUPABASE_URL;
+    const key = process.env.SUPABASE_PUBLISHABLE_KEY;
+    if (!url || !key) {
+      console.warn("[site-settings] Supabase env vars missing; returning empty defaults.");
+      return EMPTY_SETTINGS;
+    }
+    try {
+      const supabase = createClient<Database>(url, key, {
+        auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
+      });
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("key, value")
+        .in("key", ["branding", "contact", "social", "location", "analytics", "seo_defaults", "feature_flags"]);
+      if (error) throw error;
+      const out: Record<string, unknown> = {};
+      for (const row of data ?? []) out[row.key] = row.value ?? {};
+      return {
+        branding: (out.branding ?? {}) as PublicSiteSettings["branding"],
+        contact: (out.contact ?? {}) as PublicSiteSettings["contact"],
+        social: (out.social ?? {}) as PublicSiteSettings["social"],
+        location: (out.location ?? {}) as PublicSiteSettings["location"],
+        analytics: (out.analytics ?? {}) as PublicSiteSettings["analytics"],
+        seo_defaults: (out.seo_defaults ?? {}) as PublicSiteSettings["seo_defaults"],
+        feature_flags: (out.feature_flags ?? {}) as PublicSiteSettings["feature_flags"],
+      };
+    } catch (err) {
+      console.error("[site-settings] Failed to load; returning empty defaults.", err);
+      return EMPTY_SETTINGS;
+    }
   },
 );
