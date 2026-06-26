@@ -426,13 +426,8 @@ function PackageCard({ pkg }: { pkg: PackageCatalogItem }) {
 
         <div className="mt-4">
           <Button asChild className="w-full rounded-full">
-            <Link
-              to="/packages/$slug"
-              params={{ slug: pkg.slug }}
-              // Detail route built in a later sprint — link is prepared.
-            >
-              Lihat Detail
-            </Link>
+            {/* Detail route ships in a later sprint — anchor is prepared. */}
+            <a href={`/packages/${pkg.slug}`}>Lihat Detail</a>
           </Button>
         </div>
       </div>
