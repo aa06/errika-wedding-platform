@@ -15,6 +15,7 @@ import { Route as PackagesRouteImport } from './routes/packages'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PackagesSlugRouteImport } from './routes/packages.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 
@@ -47,6 +48,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PackagesSlugRoute = PackagesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => PackagesRoute,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -61,18 +67,20 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/packages': typeof PackagesRoute
+  '/packages': typeof PackagesRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/packages/$slug': typeof PackagesSlugRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/packages': typeof PackagesRoute
+  '/packages': typeof PackagesRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/packages/$slug': typeof PackagesSlugRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -80,10 +88,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/packages': typeof PackagesRoute
+  '/packages': typeof PackagesRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/packages/$slug': typeof PackagesSlugRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -95,6 +104,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sitemap.xml'
     | '/admin'
+    | '/packages/$slug'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -103,6 +113,7 @@ export interface FileRouteTypes {
     | '/packages'
     | '/reset-password'
     | '/sitemap.xml'
+    | '/packages/$slug'
     | '/admin'
   id:
     | '__root__'
@@ -113,6 +124,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sitemap.xml'
     | '/_authenticated/admin'
+    | '/packages/$slug'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -120,7 +132,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  PackagesRoute: typeof PackagesRoute
+  PackagesRoute: typeof PackagesRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
@@ -169,6 +181,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/packages/$slug': {
+      id: '/packages/$slug'
+      path: '/$slug'
+      fullPath: '/packages/$slug'
+      preLoaderRoute: typeof PackagesSlugRouteImport
+      parentRoute: typeof PackagesRoute
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -208,11 +227,23 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface PackagesRouteChildren {
+  PackagesSlugRoute: typeof PackagesSlugRoute
+}
+
+const PackagesRouteChildren: PackagesRouteChildren = {
+  PackagesSlugRoute: PackagesSlugRoute,
+}
+
+const PackagesRouteWithChildren = PackagesRoute._addFileChildren(
+  PackagesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  PackagesRoute: PackagesRoute,
+  PackagesRoute: PackagesRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
