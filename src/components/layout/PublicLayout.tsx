@@ -38,7 +38,7 @@ export function PublicLayout({
   settings?: SiteSettings;
   transparentHero?: boolean;
 }) {
-  const brandName = settings?.branding?.website_name ?? "Errika";
+  const brandName = settings?.branding?.website_name ?? "Errika Wedding Planner";
   const tagline = settings?.branding?.tagline ?? "Affordable Luxury, Perfectly Planned";
   const wa = settings?.contact?.whatsapp_number ?? "6281234567890";
   const waMsg =
