@@ -18,6 +18,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PackagesSlugRouteImport } from './routes/packages.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminTagsRouteImport } from './routes/_authenticated/admin.tags'
+import { Route as AuthenticatedAdminPackagesRouteImport } from './routes/_authenticated/admin.packages'
+import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin.categories'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -63,6 +66,23 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminTagsRoute = AuthenticatedAdminTagsRouteImport.update({
+  id: '/tags',
+  path: '/tags',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminPackagesRoute =
+  AuthenticatedAdminPackagesRouteImport.update({
+    id: '/packages',
+    path: '/packages',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminCategoriesRoute =
+  AuthenticatedAdminCategoriesRouteImport.update({
+    id: '/categories',
+    path: '/categories',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -72,6 +92,9 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/packages/$slug': typeof PackagesSlugRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/packages': typeof AuthenticatedAdminPackagesRoute
+  '/admin/tags': typeof AuthenticatedAdminTagsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -81,6 +104,9 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/packages/$slug': typeof PackagesSlugRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/packages': typeof AuthenticatedAdminPackagesRoute
+  '/admin/tags': typeof AuthenticatedAdminTagsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -93,6 +119,9 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/packages/$slug': typeof PackagesSlugRoute
+  '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/_authenticated/admin/packages': typeof AuthenticatedAdminPackagesRoute
+  '/_authenticated/admin/tags': typeof AuthenticatedAdminTagsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -105,6 +134,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/admin'
     | '/packages/$slug'
+    | '/admin/categories'
+    | '/admin/packages'
+    | '/admin/tags'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -114,6 +146,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sitemap.xml'
     | '/packages/$slug'
+    | '/admin/categories'
+    | '/admin/packages'
+    | '/admin/tags'
     | '/admin'
   id:
     | '__root__'
@@ -125,6 +160,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/_authenticated/admin'
     | '/packages/$slug'
+    | '/_authenticated/admin/categories'
+    | '/_authenticated/admin/packages'
+    | '/_authenticated/admin/tags'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -202,14 +240,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/tags': {
+      id: '/_authenticated/admin/tags'
+      path: '/tags'
+      fullPath: '/admin/tags'
+      preLoaderRoute: typeof AuthenticatedAdminTagsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/packages': {
+      id: '/_authenticated/admin/packages'
+      path: '/packages'
+      fullPath: '/admin/packages'
+      preLoaderRoute: typeof AuthenticatedAdminPackagesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/categories': {
+      id: '/_authenticated/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
+  AuthenticatedAdminPackagesRoute: typeof AuthenticatedAdminPackagesRoute
+  AuthenticatedAdminTagsRoute: typeof AuthenticatedAdminTagsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
+  AuthenticatedAdminPackagesRoute: AuthenticatedAdminPackagesRoute,
+  AuthenticatedAdminTagsRoute: AuthenticatedAdminTagsRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
