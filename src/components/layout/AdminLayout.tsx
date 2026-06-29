@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import {
   LayoutDashboard,
   Package,
+  FolderTree,
+  Tags,
   Images,
   MessageSquareQuote,
   Newspaper,
@@ -13,15 +15,30 @@ import {
 import { signOut } from "@/hooks/useAuth";
 import { ROLE_LABELS, type AppRole } from "@/lib/roles";
 
-const NAV = [
-  { label: "Dashboard", to: "/admin", icon: LayoutDashboard },
-  { label: "Packages", to: "/admin/packages", icon: Package },
-  { label: "Portfolio", to: "/admin/portfolio", icon: Images },
-  { label: "Testimonials", to: "/admin/testimonials", icon: MessageSquareQuote },
-  { label: "Blog", to: "/admin/blog", icon: Newspaper },
-  { label: "Leads", to: "/admin/leads", icon: Users },
-  { label: "Settings", to: "/admin/settings", icon: Settings },
-] as const;
+type NavItem = { label: string; to: string; icon: typeof LayoutDashboard };
+type NavGroup = { label?: string; items: NavItem[] };
+
+const NAV: NavGroup[] = [
+  { items: [{ label: "Dashboard", to: "/admin", icon: LayoutDashboard }] },
+  {
+    label: "Content",
+    items: [
+      { label: "Packages", to: "/admin/packages", icon: Package },
+      { label: "Categories", to: "/admin/categories", icon: FolderTree },
+      { label: "Tags", to: "/admin/tags", icon: Tags },
+      { label: "Portfolio", to: "/admin/portfolio", icon: Images },
+      { label: "Testimonials", to: "/admin/testimonials", icon: MessageSquareQuote },
+      { label: "Blog", to: "/admin/blog", icon: Newspaper },
+    ],
+  },
+  {
+    label: "Operations",
+    items: [
+      { label: "Leads", to: "/admin/leads", icon: Users },
+      { label: "Settings", to: "/admin/settings", icon: Settings },
+    ],
+  },
+];
 
 export interface AdminUser {
   fullName: string | null;
