@@ -56,21 +56,30 @@ export function AdminLayout({ user, children }: { user: AdminUser; children: Rea
             Errika · Admin
           </Link>
         </div>
-        <nav className="flex-1 space-y-0.5 px-3" aria-label="Admin">
-          {NAV.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-sidebar-foreground/85 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                activeProps={{ className: "bg-sidebar-accent text-sidebar-accent-foreground font-medium" }}
-              >
-                <Icon className="h-4 w-4" />
-                {item.label}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 space-y-4 px-3" aria-label="Admin">
+          {NAV.map((group, gi) => (
+            <div key={gi} className="space-y-0.5">
+              {group.label ? (
+                <div className="px-3 pb-1 pt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-sidebar-foreground/45">
+                  {group.label}
+                </div>
+              ) : null}
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm text-sidebar-foreground/85 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    activeProps={{ className: "bg-sidebar-accent text-sidebar-accent-foreground font-medium" }}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
         <div className="border-t border-sidebar-border p-4">
           <div className="text-sm font-medium">{user.fullName ?? user.email ?? "—"}</div>
